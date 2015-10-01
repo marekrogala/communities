@@ -1,0 +1,39 @@
+    Zaimplementowałem w SociaLite oraz Sparku algorytm Girvana-Newmana
+do wykrywania społeczności w grafach. Polega on na znajdowaniu
+krawędzi o największej "Edge Betweenness Centrality" oraz usuwaniu
+jej z grafu. Po kilku iteracjach otrzymujemy rozspójniony graf, gdzie
+każda spójna oznacza społeczność. Iteracje wykonujemy tak długo, jak
+wskaźnik modularności powstałej sieci nie maleje.
+
+Jaki wskaźnik? Można stosować różne. Ja zastosowałem ten najprostszy
+opisany w paperze SocCom-metric.13.pdf.
+
+Jak liczyć "Edge Betweenness Centrality"? W Sparku wykorzystałem
+metodę przedstawioną w paperze bigcomp14.pdf. W SociaLite zaimplementowałem
+tak, jak uważałem najlepiej - poprzez znajdowanie najkrótszych ścieżek
+z danego źródła i najkrótszych ścieżek z danego źródła, przechodzących
+przez daną krawędz. Wydaje się jednak, że oba sposoby są gorsze niż
+najlepszy iteracyjny algorytm Brandesa (paper brandes-08.pdf) -- niestety
+nie można go tak bezpośrednio przenieść na Sparka ani SociaLite.
+
+==========================================================================
+W katalogu papers/ znajdują się wspomniane papery.
+W katalogu input/ znajdują się przykładowe grafy.
+W katalogu logs/ znajdą się logi z uruchomień programów.
+
+W katalogu src/ znajdują się źródła programu w Sparku (w scali).
+Program w SociaLite znajduje się w pliku communities.py.
+
+run-spark.sh jest skryptem uruchamiającym program w sparku.
+run-socialite.sh -- skryptem uruchamiającym program w socialite.
+
+Oba skrypty jako argument przyjmują 3 parametry: input output K_ITER
+input -- ścieżka do pliku wejściowego (plik z listą krawędzi grafu)
+output -- ścieżka do pliku wyjściwego
+K_ITER -- dodatkowy parametr. W momencie gdy okaże się, że jest wiele
+ krawędzi z największą EdgeBetweennessCentrality ten parametr określa
+ ile krawędzi spośrod nich zostanie usuniętych (gdzie 0 -- wszystkie
+ krawędzi o największym EBC).
+
+Przed uruchomieniem programów należy mieć spark-submit oraz socialite w PATH.
+==========================================================================
